@@ -1,4 +1,4 @@
-from app import db
+from department_app import db
 
 
 class Employee(db.Model):
@@ -25,6 +25,6 @@ class Department(db.Model):
     
     
     def __repr__(self):
-        return f"Department('{self.name}', '{self.head}')"
+        return f"Department('{self.name}')"
 
 
