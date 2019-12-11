@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
+  <p><a href="{{ url_for('home') }}">Home</a></p>
   <h1>Employees</h1>
   <table>
     <tr>
@@ -19,4 +20,5 @@
     </tr>
     {% endfor %}
   </table>
+  <p><a href="{{ url_for('add_employee') }}">Add new department</a></p>
 {% endblock content %}
