@@ -67,6 +67,14 @@ def update_employee(employee_id):
     )
 
 
+@app.route("/employee/<int:employee_id>/delete", methods=["POST"])
+def delete_employee(employee_id):
+    employee = Employee.query.get(employee_id)
+    db.session.delete(employee)
+    db.session.commit()
+    return redirect(url_for("show_employees"))
+
+
 @app.route("/departments")
 def show_departments():
     departments = Department.query.order_by(Department.id).all()
