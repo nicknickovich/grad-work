@@ -1,4 +1,4 @@
-from flask import render_template, url_for, redirect, flash
+from flask import render_template, url_for, redirect
 from department_app.models import Employee, Department
 from department_app import db, app
 from department_app.forms import AddDepartmentForm, AddEmployeeForm
@@ -20,7 +20,7 @@ def show_employees():
 def add_employee():
     form = AddEmployeeForm()
     if form.validate_on_submit():
-        Employee = Employee(
+        employee = Employee(
             name=form.name.data,
             date_of_birth=form.date_of_birth.data,
             salary=form.salary.data,

@@ -14,11 +14,11 @@
     <tr>
       <td>{{ employee.id }}</td>
       <td>{{ employee.name }}</td>
-      <td>{{ employee.date_of_birth }}</td>
+      <td>{{ employee.date_of_birth.strftime("%Y-%m-%d") }}</td>
       <td>{{ employee.salary }}</td>
-      <td>{{ employee.department_name }}</td>
+      <td>{{ employee.department.name }}</td>
     </tr>
     {% endfor %}
   </table>
-  <p><a href="{{ url_for('add_employee') }}">Add new department</a></p>
+  <p><a href="{{ url_for('add_employee') }}">Add new employee</a></p>
 {% endblock content %}

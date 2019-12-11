@@ -7,7 +7,7 @@ class Employee(db.Model):
     date_of_birth = db.Column(db.DateTime, nullable=False)
     salary = db.Column(db.Float, nullable=False)
     department_id = db.Column(db.Integer, db.ForeignKey("department.id"), nullable=False)
-    department_name = db.relationship("Department", backref="department", lazy=True)
+    department = db.relationship("Department", backref="department", lazy=True)
 
 
     def __repr__(self):
@@ -16,7 +16,7 @@ Employee('{self.id}',
          '{self.name}', 
          '{self.salary}',
          '{self.date_of_birth}',
-         '{self.department_name})"""
+         '{self.department})"""
 
 
 class Department(db.Model):
