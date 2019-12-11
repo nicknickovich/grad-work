@@ -6,7 +6,7 @@ from department_app.models import Department
 from department_app import db
 
 
-class AddEmployeeForm(FlaskForm):
+class EmployeeForm(FlaskForm):
     name = StringField(
         "Name", validators=[DataRequired(), Length(min=2, max=50)]
     )
@@ -16,12 +16,12 @@ class AddEmployeeForm(FlaskForm):
         (department.id, department.name) for department in
         Department.query.order_by(Department.id).all()])
     
-    submit = SubmitField("Add Employee")
+    submit = SubmitField("Submit")
 
 
-class AddDepartmentForm(FlaskForm):
+class DepartmentForm(FlaskForm):
     name = StringField(
         "Name", validators=[DataRequired(), Length(min=2, max=100)]
     )
     
-    submit = SubmitField("Add Department")
+    submit = SubmitField("Submit")
