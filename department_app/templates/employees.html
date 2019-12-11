@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block content %}
+  <p><a href="{{ url_for('home') }}">Home</a></p>
+  <h1>Employees</h1>
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Date of Birth</th>
+      <th>Salary</th>
+      <th>Department</th>
+    </tr>
+    {% for employee in employees %}
+    <tr>
+      <td>{{ employee.id }}</td>
+      <td>{{ employee.name }}</td>
+      <td>{{ employee.date_of_birth.strftime("%Y-%m-%d") }}</td>
+      <td>{{ employee.salary }}</td>
+      <td>{{ employee.department.name }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  <p><a href="{{ url_for('add_employee') }}">Add new employee</a></p>
+{% endblock content %}

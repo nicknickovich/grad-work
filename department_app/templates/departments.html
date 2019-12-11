@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block content %}
+<p><a href="{{ url_for('home') }}">Home</a></p>
+  <h1>Departments</h1>
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+    </tr>
+    {% for department in departments %}
+    <tr>
+      <td>{{ department.id }}</td>
+      <td>{{ department.name }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  <br>
+  <p><a href="{{ url_for('add_department') }}">Add new department</a></p>
+{% endblock content %}
