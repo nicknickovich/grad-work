@@ -1,4 +1,4 @@
-from flask import render_template, url_for, redirect, request
+from flask import render_template, url_for, redirect, request, flash
 from department_app.models import Employee, Department
 from department_app import db, app
 from department_app.forms import DepartmentForm, EmployeeForm
@@ -28,6 +28,7 @@ def add_employee():
         )
         db.session.add(employee)
         db.session.commit()
+        flash("Employee has been added!", "success")
         return redirect(url_for("show_employees"))
 
     return render_template(
@@ -54,6 +55,7 @@ def update_employee(employee_id):
         employee.salary = form.salary.data
         employee.department_id = form.department_id.data
         db.session.commit()
+        flash("Employee has been updated!", "success")
         return redirect(url_for("show_employees"))
     elif request.method == "GET":
         form.name.data = employee.name
@@ -72,6 +74,7 @@ def delete_employee(employee_id):
     employee = Employee.query.get(employee_id)
     db.session.delete(employee)
     db.session.commit()
+    flash("Employee has been deleted!", "success")
     return redirect(url_for("show_employees"))
 
 
@@ -89,6 +92,7 @@ def add_department():
         department = Department(name=form.name.data)
         db.session.add(department)
         db.session.commit()
+        flash("Department has been added!", "success")
         return redirect(url_for("show_departments"))
 
     return render_template(

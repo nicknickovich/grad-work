@@ -1,25 +1,26 @@
 {% extends "layout.html" %}
 {% block content %}
-  <p><a href="{{ url_for('home') }}">Home</a></p>
-  <h1>Employees</h1>
-  <table>
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Date of Birth</th>
-      <th>Salary</th>
-      <th>Department</th>
-    </tr>
-    {% for employee in employees %}
-    <tr>
-      <td>{{ employee.id }}</td>
-      <td><a href="{{ url_for('employee', employee_id=employee.id) }}">{{ employee.name }}</a></td>
-      <td>{{ employee.date_of_birth.strftime("%Y-%m-%d") }}</td>
-      <td>{{ employee.salary }}</td>
-      <td>{{ employee.department.name }}</td>
-      <td><a href="{{ url_for('update_employee', employee_id=employee.id) }}">Update</a></td>
-    </tr>
-    {% endfor %}
-  </table>
-  <p><a href="{{ url_for('add_employee') }}">Add new employee</a></p>
-{% endblock content %}
+  <div class="content-section">
+    <h1>Employees</h1>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Date of Birth</th>
+        <th>Salary</th>
+        <th>Department</th>
+      </tr>
+      {% for employee in employees %}
+      <tr>
+        <td>{{ employee.id }}</td>
+        <td><a href="{{ url_for('employee', employee_id=employee.id) }}">{{ employee.name }}</a></td>
+        <td>{{ employee.date_of_birth.strftime("%Y-%m-%d") }}</td>
+        <td>{{ employee.salary }}</td>
+        <td>{{ employee.department.name }}</td>
+        <td><a href="{{ url_for('update_employee', employee_id=employee.id) }}">Update</a></td>
+      </tr>
+      {% endfor %}
+    </table>
+    <p><a href="{{ url_for('add_employee') }}">Add new employee</a></p>
+  </div>
+{% endblock %}
