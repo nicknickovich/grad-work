@@ -9,11 +9,13 @@
       <tr>
         <th>ID</th>
         <th>Name</th>
+        <th>Average Salary</th>
       </tr>
       {% for department in departments %}
       <tr>
         <td>{{ department.id }}</td>
         <td>{{ department.name }}</td>
+        <td>{{ avg_salaries[department.id] }}</td>
       </tr>
       {% endfor %}
     </table>

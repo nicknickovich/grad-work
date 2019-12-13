@@ -81,8 +81,33 @@ def delete_employee(employee_id):
 @app.route("/departments")
 def show_departments():
     departments = Department.query.order_by(Department.id).all()
+    employees = Employee.query.all()
+    salaries_info = {}
+    for employee in employees:
+        if employee.department_id in salaries_info:
+            salaries_info[employee.department_id]["total"] += employee.salary
+            salaries_info[employee.department_id]["count"] += 1
+        else:
+            salaries_info.update(
+                {
+                    employee.department_id: {
+                        "total": employee.salary,
+                        "count": 1,
+                    }
+                }
+            )
+    avg_salaries = {}
+    for department in departments:
+        if department.id in salaries_info:
+            avg_salaries[department.id] = (
+                salaries_info[department.id]["total"]
+                / salaries_info[department.id]["count"]
+            )
+        else:
+            avg_salaries[department.id] = 0 
+
     return render_template("departments.html", departments=departments,
-                            title="All departments")
+                            avg_salaries=avg_salaries, title="All departments")
 
 
 @app.route("/add_department", methods=["GET", "POST"])
