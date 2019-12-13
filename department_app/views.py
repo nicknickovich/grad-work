@@ -1,12 +1,12 @@
-from flask import render_template, url_for, redirect
+from flask import render_template, url_for, redirect, request, flash
 from department_app.models import Employee, Department
 from department_app import db, app
-from department_app.forms import AddDepartmentForm, AddEmployeeForm
+from department_app.forms import DepartmentForm, EmployeeForm
 
 
 @app.route("/")
 def home():
-    return render_template("home.html", title="EMS Home")
+    return render_template("home.html", title="Home")
 
 
 @app.route("/employees")
@@ -18,7 +18,7 @@ def show_employees():
 
 @app.route("/add_employee", methods=["GET", "POST"])
 def add_employee():
-    form = AddEmployeeForm()
+    form = EmployeeForm()
     if form.validate_on_submit():
         employee = Employee(
             name=form.name.data,
@@ -28,6 +28,7 @@ def add_employee():
         )
         db.session.add(employee)
         db.session.commit()
+        flash("Employee has been added!", "success")
         return redirect(url_for("show_employees"))
 
     return render_template(
@@ -36,23 +37,110 @@ def add_employee():
     )
 
 
+@app.route("/employee/<int:employee_id>")
+def employee(employee_id):
+    employee = Employee.query.get_or_404(employee_id)
+    return render_template(
+        "employee.html", title=employee.name, employee=employee
+    )
+
+
+@app.route("/employee/<int:employee_id>/update", methods=["GET", "POST"])
+def update_employee(employee_id):
+    employee = Employee.query.get_or_404(employee_id)
+    form = EmployeeForm()
+    if form.validate_on_submit():
+        employee.name = form.name.data
+        employee.date_of_birth = form.date_of_birth.data
+        employee.salary = form.salary.data
+        employee.department_id = form.department_id.data
+        db.session.commit()
+        flash("Employee has been updated!", "success")
+        return redirect(url_for("show_employees"))
+    elif request.method == "GET":
+        form.name.data = employee.name
+        form.date_of_birth.data = employee.date_of_birth
+        form.salary.data = employee.salary
+        form.department_id.data = employee.department_id
+
+    return render_template(
+        "add_employee.html", title="Update employee",
+        form=form, legend=f"Update {employee.name}"
+    )
+
+
+@app.route("/employee/<int:employee_id>/delete", methods=["POST"])
+def delete_employee(employee_id):
+    employee = Employee.query.get_or_404(employee_id)
+    db.session.delete(employee)
+    db.session.commit()
+    flash("Employee has been deleted!", "success")
+    return redirect(url_for("show_employees"))
+
+
 @app.route("/departments")
 def show_departments():
     departments = Department.query.order_by(Department.id).all()
-    return render_template("departments.html", departments=departments,
-                            title="All departments")
+    employees = Employee.query.all()
+    salaries_info = {}
+    for employee in employees:
+        if employee.department_id in salaries_info:
+            salaries_info[employee.department_id]["total"] += employee.salary
+            salaries_info[employee.department_id]["count"] += 1
+        else:
+            salaries_info.update(
+                {
+                    employee.department_id: {
+                        "total": employee.salary,
+                        "count": 1,
+                    }
+                }
+            )
+    avg_salaries = {}
+    for department in departments:
+        if department.id in salaries_info:
+            avg_salaries[department.id] = (
+                round(salaries_info[department.id]["total"]
+                / salaries_info[department.id]["count"], 2)
+            )
+        else:
+            avg_salaries[department.id] = 0 
+
+    return render_template(
+        "departments.html", departments=departments,
+        avg_salaries=avg_salaries, title="All departments"
+    )
 
 
 @app.route("/add_department", methods=["GET", "POST"])
 def add_department():
-    form = AddDepartmentForm()
+    form = DepartmentForm()
     if form.validate_on_submit():
         department = Department(name=form.name.data)
         db.session.add(department)
         db.session.commit()
+        flash("Department has been added!", "success")
         return redirect(url_for("show_departments"))
 
     return render_template(
         "add_department.html", title="Add new department",
         form=form, legend="New Department"
+    )
+
+
+@app.route("/department/<int:department_id>/update", methods=["GET", "POST"])
+def update_department(department_id):
+    department = Department.query.get_or_404(department_id)
+    form = DepartmentForm()
+    if form.validate_on_submit():
+        department.name = form.name.data
+        db.session.commit()
+        flash("Department has been updated!", "success")
+        return redirect(url_for("show_departments"))
+    elif request.method == "GET":
+        form.name.data = department.name
+
+    return render_template(
+        "add_department.html", title="Update department",
+        form=form, legend=f"Update {department.name}"
     )

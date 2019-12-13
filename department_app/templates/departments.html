@@ -1,19 +1,27 @@
 {% extends "layout.html" %}
+{% block nav_right %}
+  <a class="nav-item nav-link" href="{{ url_for('add_department') }}">New department</a>
+{% endblock %}
 {% block content %}
-<p><a href="{{ url_for('home') }}">Home</a></p>
-  <h1>Departments</h1>
-  <table>
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-    </tr>
-    {% for department in departments %}
-    <tr>
-      <td>{{ department.id }}</td>
-      <td>{{ department.name }}</td>
-    </tr>
-    {% endfor %}
-  </table>
-  <br>
-  <p><a href="{{ url_for('add_department') }}">Add new department</a></p>
-{% endblock content %}
+  <div class="content-section">
+    <h1>Departments</h1>
+    <table class="table table-striped">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Average Salary</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for department in departments %}
+          <tr>
+            <td>{{ department.name }}</td>
+            <td>{{ avg_salaries[department.id] }}</td>
+            <td><a class="btn btn-secondary btn-sm" href="{{ url_for('update_department', department_id=department.id) }}">Update</a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
