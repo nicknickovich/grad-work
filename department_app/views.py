@@ -126,3 +126,21 @@ def add_department():
         "add_department.html", title="Add new department",
         form=form, legend="New Department"
     )
+
+
+@app.route("/department/<int:department_id>/update", methods=["GET", "POST"])
+def update_department(department_id):
+    department = Department.query.get_or_404(department_id)
+    form = DepartmentForm()
+    if form.validate_on_submit():
+        department.name = form.name.data
+        db.session.commit()
+        flash("Department has been updated!", "success")
+        return redirect(url_for("show_departments"))
+    elif request.method == "GET":
+        form.name.data = department.name
+
+    return render_template(
+        "add_department.html", title="Update department",
+        form=form, legend=f"Update {department.name}"
+    )

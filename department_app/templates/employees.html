@@ -8,7 +8,6 @@
     <table class="table table-striped">
       <thead class="thead-dark">
         <tr>
-          <th scope="col">ID</th>
           <th scope="col">Name</th>
           <th scope="col">Date of Birth</th>
           <th scope="col">Salary</th>
@@ -19,12 +18,11 @@
       <tbody>
         {% for employee in employees %}
           <tr>
-            <th scope="row">{{ employee.id }}</td>
             <td><a href="{{ url_for('employee', employee_id=employee.id) }}">{{ employee.name }}</a></td>
             <td>{{ employee.date_of_birth.strftime("%Y-%m-%d") }}</td>
             <td>{{ employee.salary }}</td>
             <td>{{ employee.department.name }}</td>
-            <td><a href="{{ url_for('update_employee', employee_id=employee.id) }}">Update</a></td>
+            <td><a class="btn btn-secondary btn-sm" href="{{ url_for('update_employee', employee_id=employee.id) }}">Update</a></td>
           </tr>
         {% endfor %}
       </tbody>
