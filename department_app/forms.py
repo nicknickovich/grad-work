@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import (StringField, SubmitField, IntegerField, 
                      DecimalField, DateField, SelectField)
-from wtforms.validators import DataRequired, Length
+from wtforms.validators import DataRequired, Length, ValidationError
 from department_app.models import Department
 from department_app import db
 
@@ -24,4 +24,9 @@ class DepartmentForm(FlaskForm):
         "Name", validators=[DataRequired(), Length(min=2, max=100)]
     )
     
+    def validate_name(self, name):
+        department = Department.query.filter_by(name=name.data).first()
+        if department:
+            raise ValidationError("Department with this name already exists.")
+
     submit = SubmitField("Submit")
