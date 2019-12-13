@@ -1,4 +1,7 @@
 {% extends "layout.html" %}
+{% block nav_right %}
+  <a class="nav-item nav-link" href="{{ url_for('add_employee') }}">Add new employee</a>
+{% endblock %}
 {% block content %}
   <div class="content-section">
     <h1>Employees</h1>
@@ -21,6 +24,5 @@
       </tr>
       {% endfor %}
     </table>
-    <p><a href="{{ url_for('add_employee') }}">Add new employee</a></p>
   </div>
 {% endblock %}

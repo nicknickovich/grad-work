@@ -1,7 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
   <div class="content-section">
-    <p><a href="{{ url_for('home') }}">Home</a></p>
     <h1>{{ employee.name }}</h1>
     <table>
       <tr>
@@ -20,12 +19,9 @@
       </tr>
     </table>
     <div>
-      <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('update_employee', employee_id=employee.id) }}">Update Post</a>
+      <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('update_employee', employee_id=employee.id) }}">Update</a>
       <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
     </div>
-    <p><a href="{{ url_for('update_employee', employee_id=employee.id) }}">Update</a></p>
-    <p><a href="{{ url_for('delete_employee', employee_id=employee.id) }}">Delete</a></p>
-    <p><a href="{{ url_for('add_employee') }}">Add new employee</a></p>
   </div>
   <!-- Modal -->
   <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">

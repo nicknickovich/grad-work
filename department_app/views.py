@@ -47,7 +47,7 @@ def employee(employee_id):
 
 @app.route("/employee/<int:employee_id>/update", methods=["GET", "POST"])
 def update_employee(employee_id):
-    employee = Employee.query.get(employee_id)
+    employee = Employee.query.get_or_404(employee_id)
     form = EmployeeForm()
     if form.validate_on_submit():
         employee.name = form.name.data
@@ -71,7 +71,7 @@ def update_employee(employee_id):
 
 @app.route("/employee/<int:employee_id>/delete", methods=["POST"])
 def delete_employee(employee_id):
-    employee = Employee.query.get(employee_id)
+    employee = Employee.query.get_or_404(employee_id)
     db.session.delete(employee)
     db.session.commit()
     flash("Employee has been deleted!", "success")

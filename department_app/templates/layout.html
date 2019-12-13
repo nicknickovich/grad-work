@@ -24,28 +24,28 @@
             </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
-              <a class="nav-item nav-link" href="#">Option1</a>
-              <a class="nav-item nav-link" href="#">Option2</a>
-              <a class="nav-item nav-link" href="#">Option3</a>
+              {% block nav_right %}{% endblock %}
             </div>
           </div>
         </div>
       </nav>
     </header>
     <main>
-      <div class="row">
-        <div class="col-md-8">
-          {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-              {% for category, message in messages %}
-                <div class="alert alert-{{ category }}">
-                  {{ message }}
-                </div>
-              {% endfor %}
-            {% endif %}
-          {% endwith %}
+      <div class="container">
+        <div class="row">
+          <div class="col-md-10 mx-auto">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }}">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
 
-          {% block content %}{% endblock %}
+            {% block content %}{% endblock %}
+          </div>
         </div>
       </div>
     </main>
