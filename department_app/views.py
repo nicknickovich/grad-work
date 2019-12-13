@@ -6,11 +6,15 @@ from department_app.forms import DepartmentForm, EmployeeForm
 
 @app.route("/")
 def home():
+    """Render home page"""
+
     return render_template("home.html", title="Home")
 
 
 @app.route("/employees")
 def show_employees():
+    """Render a list of all employees"""
+
     employees = Employee.query.order_by(Employee.id).all()
     return render_template("employees.html", employees=employees,
                             title="All employees")
@@ -18,7 +22,10 @@ def show_employees():
 
 @app.route("/add_employee", methods=["GET", "POST"])
 def add_employee():
+    """Add a new employee using a form."""
+
     form = EmployeeForm()
+
     if form.validate_on_submit():
         employee = Employee(
             name=form.name.data,
@@ -39,6 +46,8 @@ def add_employee():
 
 @app.route("/employee/<int:employee_id>")
 def employee(employee_id):
+    """Render page of an employee with a given id"""
+
     employee = Employee.query.get_or_404(employee_id)
     return render_template(
         "employee.html", title=employee.name, employee=employee
@@ -47,8 +56,13 @@ def employee(employee_id):
 
 @app.route("/employee/<int:employee_id>/update", methods=["GET", "POST"])
 def update_employee(employee_id):
+    """Render page on which you can update information about an
+    employee with a given id.
+    """
+
     employee = Employee.query.get_or_404(employee_id)
     form = EmployeeForm()
+
     if form.validate_on_submit():
         employee.name = form.name.data
         employee.date_of_birth = form.date_of_birth.data
@@ -58,6 +72,7 @@ def update_employee(employee_id):
         flash("Employee has been updated!", "success")
         return redirect(url_for("show_employees"))
     elif request.method == "GET":
+        # Fill the form with current values.
         form.name.data = employee.name
         form.date_of_birth.data = employee.date_of_birth
         form.salary.data = employee.salary
@@ -71,6 +86,8 @@ def update_employee(employee_id):
 
 @app.route("/employee/<int:employee_id>/delete", methods=["POST"])
 def delete_employee(employee_id):
+    """Delete employee with a given id"""
+
     employee = Employee.query.get_or_404(employee_id)
     db.session.delete(employee)
     db.session.commit()
@@ -80,8 +97,13 @@ def delete_employee(employee_id):
 
 @app.route("/departments")
 def show_departments():
+    """Render a list of all departments"""
+
     departments = Department.query.order_by(Department.id).all()
     employees = Employee.query.all()
+
+    # Get information about all employees' salaries
+    # and departments they belong to.
     salaries_info = {}
     for employee in employees:
         if employee.department_id in salaries_info:
@@ -96,14 +118,19 @@ def show_departments():
                     }
                 }
             )
+    
+    # Calculate average salaries for all departments
+    # and store them in a dictionary.
     avg_salaries = {}
     for department in departments:
         if department.id in salaries_info:
+            # If department has employees.
             avg_salaries[department.id] = (
                 round(salaries_info[department.id]["total"]
                 / salaries_info[department.id]["count"], 2)
             )
         else:
+            # Department has no employees.
             avg_salaries[department.id] = 0 
 
     return render_template(
@@ -114,6 +141,8 @@ def show_departments():
 
 @app.route("/add_department", methods=["GET", "POST"])
 def add_department():
+    """Add a new department using a form."""
+
     form = DepartmentForm()
     if form.validate_on_submit():
         department = Department(name=form.name.data)
@@ -130,6 +159,8 @@ def add_department():
 
 @app.route("/department/<int:department_id>/update", methods=["GET", "POST"])
 def update_department(department_id):
+    """Delete department with a given id"""
+
     department = Department.query.get_or_404(department_id)
     form = DepartmentForm()
     if form.validate_on_submit():
@@ -138,6 +169,7 @@ def update_department(department_id):
         flash("Department has been updated!", "success")
         return redirect(url_for("show_departments"))
     elif request.method == "GET":
+        # Fill the form with current value.
         form.name.data = department.name
 
     return render_template(

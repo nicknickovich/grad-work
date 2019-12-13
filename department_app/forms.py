@@ -7,6 +7,8 @@ from department_app import db
 
 
 class EmployeeForm(FlaskForm):
+    """Form for adding and updating employees."""
+
     name = StringField(
         "Name", validators=[DataRequired(), Length(min=2, max=50)]
     )
@@ -20,6 +22,8 @@ class EmployeeForm(FlaskForm):
 
 
 class DepartmentForm(FlaskForm):
+    """Form for adding and updating departments."""
+    
     name = StringField(
         "Name", validators=[DataRequired(), Length(min=2, max=100)]
     )

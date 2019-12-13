@@ -16,7 +16,7 @@ Employee('{self.id}',
          '{self.name}', 
          '{self.salary}',
          '{self.date_of_birth}',
-         '{self.department})"""
+         '{self.department}')"""
 
 
 class Department(db.Model):
