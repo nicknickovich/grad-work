@@ -6,7 +6,7 @@ from department_app.forms import DepartmentForm, EmployeeForm
 
 @app.route("/")
 def home():
-    return render_template("home.html", title="EMS Home")
+    return render_template("home.html", title="Home")
 
 
 @app.route("/employees")
@@ -100,14 +100,16 @@ def show_departments():
     for department in departments:
         if department.id in salaries_info:
             avg_salaries[department.id] = (
-                salaries_info[department.id]["total"]
-                / salaries_info[department.id]["count"]
+                round(salaries_info[department.id]["total"]
+                / salaries_info[department.id]["count"], 2)
             )
         else:
             avg_salaries[department.id] = 0 
 
-    return render_template("departments.html", departments=departments,
-                            avg_salaries=avg_salaries, title="All departments")
+    return render_template(
+        "departments.html", departments=departments,
+        avg_salaries=avg_salaries, title="All departments"
+    )
 
 
 @app.route("/add_department", methods=["GET", "POST"])

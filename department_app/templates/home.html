@@ -2,7 +2,10 @@
 {% block content %}
   <div class="content-section">
     <h1>Homepage</h1>
-    <p><a href="{{ url_for('show_departments') }}">Departments</a></p>
-    <p><a href="{{ url_for('show_employees') }}">Employees</a></p>
+    <p>Welcome to our website for managing departments and employees!</p> 
+    <p>Go to <a href="{{ url_for('show_departments') }}">departments</a> if you
+    want to see a list of all current departments or go to 
+    <a href="{{ url_for('show_employees') }}">employees</a> to see a list of
+    all current employees.</p>
   </div>
 {% endblock %}

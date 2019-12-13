@@ -2,25 +2,30 @@
 {% block content %}
   <div class="content-section">
     <h1>{{ employee.name }}</h1>
-    <table>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Date of Birth</th>
-        <th>Salary</th>
-        <th>Department</th>
-      </tr>
-      <tr>
-        <td>{{ employee.id }}</td>
-        <td>{{ employee.name }}</td>
-        <td>{{ employee.date_of_birth.strftime("%Y-%m-%d") }}</td>
-        <td>{{ employee.salary }}</td>
-        <td>{{ employee.department.name }}</td>
-      </tr>
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Name</th>
+          <th scope="col">Date of Birth</th>
+          <th scope="col">Salary</th>
+          <th scope="col">Department</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">{{ employee.id }}</td>
+          <td>{{ employee.name }}</td>
+          <td>{{ employee.date_of_birth.strftime("%Y-%m-%d") }}</td>
+          <td>{{ employee.salary }}</td>
+          <td>{{ employee.department.name }}</td>
+        </tr>
+      </tbody>
     </table>
     <div>
-      <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('update_employee', employee_id=employee.id) }}">Update</a>
-      <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
+      <a class="btn btn-secondary btn-m mt-1 mb-1" href="{{ url_for('update_employee', employee_id=employee.id) }}">Update</a>
+      <button type="button" class="btn btn-danger btn-m m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
     </div>
   </div>
   <!-- Modal -->
@@ -28,7 +33,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="deleteModalLabel">Delete Post?</h5>
+          <h5 class="modal-title" id="deleteModalLabel">Delete Employee?</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
