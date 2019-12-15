@@ -9,5 +9,6 @@ app.config.from_object("config")
 app.config.from_pyfile("config.py")
 db = SQLAlchemy(app)
 
-
+# Imported after creating db and app instances
+# to avoid circular import
 from department_app import views

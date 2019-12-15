@@ -7,14 +7,12 @@ from department_app.forms import DepartmentForm, EmployeeForm
 @app.route("/")
 def home():
     """Render home page"""
-
     return render_template("home.html", title="Home")
 
 
 @app.route("/employees")
 def show_employees():
     """Render a list of all employees"""
-
     employees = Employee.query.order_by(Employee.id).all()
     return render_template("employees.html", employees=employees,
                             title="All employees")
@@ -23,10 +21,10 @@ def show_employees():
 @app.route("/add_employee", methods=["GET", "POST"])
 def add_employee():
     """Add a new employee using a form."""
-
     form = EmployeeForm()
 
     if form.validate_on_submit():
+        # Create new Employee with values from the form.
         employee = Employee(
             name=form.name.data,
             date_of_birth=form.date_of_birth.data,
@@ -47,7 +45,6 @@ def add_employee():
 @app.route("/employee/<int:employee_id>")
 def employee(employee_id):
     """Render page of an employee with a given id"""
-
     employee = Employee.query.get_or_404(employee_id)
     return render_template(
         "employee.html", title=employee.name, employee=employee
@@ -59,11 +56,11 @@ def update_employee(employee_id):
     """Render page on which you can update information about an
     employee with a given id.
     """
-
     employee = Employee.query.get_or_404(employee_id)
     form = EmployeeForm()
 
     if form.validate_on_submit():
+        # Set employee attributes to values from the form.
         employee.name = form.name.data
         employee.date_of_birth = form.date_of_birth.data
         employee.salary = form.salary.data
@@ -87,7 +84,6 @@ def update_employee(employee_id):
 @app.route("/employee/<int:employee_id>/delete", methods=["POST"])
 def delete_employee(employee_id):
     """Delete employee with a given id"""
-
     employee = Employee.query.get_or_404(employee_id)
     db.session.delete(employee)
     db.session.commit()
@@ -98,7 +94,6 @@ def delete_employee(employee_id):
 @app.route("/departments")
 def show_departments():
     """Render a list of all departments"""
-
     departments = Department.query.order_by(Department.id).all()
     employees = Employee.query.all()
 
@@ -142,9 +137,10 @@ def show_departments():
 @app.route("/add_department", methods=["GET", "POST"])
 def add_department():
     """Add a new department using a form."""
-
     form = DepartmentForm()
+
     if form.validate_on_submit():
+        # Set department name to a value from the form.
         department = Department(name=form.name.data)
         db.session.add(department)
         db.session.commit()
@@ -160,10 +156,11 @@ def add_department():
 @app.route("/department/<int:department_id>/update", methods=["GET", "POST"])
 def update_department(department_id):
     """Delete department with a given id"""
-
     department = Department.query.get_or_404(department_id)
     form = DepartmentForm()
+    
     if form.validate_on_submit():
+        # Set department name to a value from the form.
         department.name = form.name.data
         db.session.commit()
         flash("Department has been updated!", "success")
