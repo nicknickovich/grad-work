@@ -2,6 +2,7 @@ from flask import render_template, url_for, redirect, request, flash
 from department_app.models import Employee, Department
 from department_app import db, app
 from department_app.forms import DepartmentForm, EmployeeForm
+from sqlalchemy.exc import IntegrityError
 
 
 @app.route("/")
@@ -153,12 +154,21 @@ def add_department():
     )
 
 
+@app.route("/department/<int:department_id>")
+def department(department_id):
+    """Render page of a department with a given id"""
+    department = Department.query.get_or_404(department_id)
+    return render_template(
+        "department.html", title=department.name, department=department
+    )
+
+
 @app.route("/department/<int:department_id>/update", methods=["GET", "POST"])
 def update_department(department_id):
     """Delete department with a given id"""
     department = Department.query.get_or_404(department_id)
     form = DepartmentForm()
-    
+
     if form.validate_on_submit():
         # Set department name to a value from the form.
         department.name = form.name.data
@@ -173,3 +183,20 @@ def update_department(department_id):
         "add_department.html", title="Update department",
         form=form, legend=f"Update {department.name}"
     )
+
+
+@app.route("/department/<int:department_id>/delete", methods=["POST"])
+def delete_department(department_id):
+    """Delete department with a given id"""
+    department = Department.query.get_or_404(department_id)
+    try:
+        db.session.delete(department)
+        db.session.commit()
+    except IntegrityError:
+        # If department has employees handle an exception.
+        flash("Department that has employees cannot be deleted!", "danger")
+        return redirect(url_for("show_departments"))
+    else:
+        # Redirect to departments page with success message.
+        flash("Department has been deleted!", "success")
+        return redirect(url_for("show_departments"))
