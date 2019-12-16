@@ -27,6 +27,7 @@ class DepartmentForm(FlaskForm):
     )
     
     def validate_name(self, name):
+        """Check if department with provided name exists."""
         department = Department.query.filter_by(name=name.data).first()
         if department:
             raise ValidationError("Department with this name already exists.")
