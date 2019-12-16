@@ -7,6 +7,7 @@ from department_app import db
 
 
 class EmployeeForm(FlaskForm):
+    """Form for adding and updating employees."""
     name = StringField(
         "Name", validators=[DataRequired(), Length(min=2, max=50)]
     )
@@ -20,11 +21,13 @@ class EmployeeForm(FlaskForm):
 
 
 class DepartmentForm(FlaskForm):
+    """Form for adding and updating departments."""
     name = StringField(
         "Name", validators=[DataRequired(), Length(min=2, max=100)]
     )
     
     def validate_name(self, name):
+        """Check if department with provided name exists."""
         department = Department.query.filter_by(name=name.data).first()
         if department:
             raise ValidationError("Department with this name already exists.")
