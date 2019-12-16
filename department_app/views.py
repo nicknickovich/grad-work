@@ -1,8 +1,9 @@
 from flask import render_template, url_for, redirect, request, flash
+from sqlalchemy.exc import IntegrityError
 from department_app.models import Employee, Department
 from department_app import db, app
-from department_app.forms import DepartmentForm, EmployeeForm
-from sqlalchemy.exc import IntegrityError
+from department_app.forms import DepartmentForm, EmployeeForm, SearchForm
+
 
 
 @app.route("/")
@@ -16,7 +17,7 @@ def show_employees():
     """Render a list of all employees"""
     employees = Employee.query.order_by(Employee.id).all()
     return render_template("employees.html", employees=employees,
-                            title="All employees")
+                           title="All employees")
 
 
 @app.route("/add_employee", methods=["GET", "POST"])
@@ -44,7 +45,7 @@ def add_employee():
 
 
 @app.route("/employee/<int:employee_id>")
-def employee(employee_id):
+def show_employee(employee_id):
     """Render page of an employee with a given id"""
     employee = Employee.query.get_or_404(employee_id)
     return render_template(
@@ -69,7 +70,7 @@ def update_employee(employee_id):
         db.session.commit()
         flash("Employee has been updated!", "success")
         return redirect(url_for("show_employees"))
-    elif request.method == "GET":
+    if request.method == "GET":
         # Fill the form with current values.
         form.name.data = employee.name
         form.date_of_birth.data = employee.date_of_birth
@@ -90,6 +91,22 @@ def delete_employee(employee_id):
     db.session.commit()
     flash("Employee has been deleted!", "success")
     return redirect(url_for("show_employees"))
+
+
+@app.route("/search_employees", methods=["GET", "POST"])
+def search_employees():
+    """Search employees by date of birth."""
+    form = SearchForm()
+    if form.validate_on_submit():
+        employees = Employee.query\
+            .filter(form.from_date.data <= Employee.date_of_birth,
+                    Employee.date_of_birth <= form.to_date.data).all()
+        return render_template("employees.html", employees=employees,
+                               title="Search results")
+    return render_template(
+        "search_employees.html", title="Search employees", form=form,
+        legend="Search employees by date of birth"
+    )
 
 
 @app.route("/departments")
@@ -114,7 +131,7 @@ def show_departments():
                     }
                 }
             )
-    
+
     # Calculate average salaries for all departments
     # and store them in a dictionary.
     avg_salaries = {}
@@ -123,11 +140,11 @@ def show_departments():
             # If department has employees.
             avg_salaries[department.id] = (
                 round(salaries_info[department.id]["total"]
-                / salaries_info[department.id]["count"], 2)
+                      / salaries_info[department.id]["count"], 2)
             )
         else:
             # Department has no employees.
-            avg_salaries[department.id] = 0 
+            avg_salaries[department.id] = 0
 
     return render_template(
         "departments.html", departments=departments,
@@ -155,7 +172,7 @@ def add_department():
 
 
 @app.route("/department/<int:department_id>")
-def department(department_id):
+def show_department(department_id):
     """Render page of a department with a given id"""
     department = Department.query.get_or_404(department_id)
     return render_template(
@@ -175,7 +192,7 @@ def update_department(department_id):
         db.session.commit()
         flash("Department has been updated!", "success")
         return redirect(url_for("show_departments"))
-    elif request.method == "GET":
+    if request.method == "GET":
         # Fill the form with current value.
         form.name.data = department.name
 
