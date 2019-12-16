@@ -33,3 +33,15 @@ class DepartmentForm(FlaskForm):
             raise ValidationError("Department with this name already exists.")
 
     submit = SubmitField("Submit")
+
+
+class SearchForm(FlaskForm):
+    """Form for searching employees by date of birth."""
+    from_date = DateField("From", validators=[DataRequired()])
+    to_date = DateField("To", validators=[DataRequired()])
+
+    def validate_to_date(self, to_date):
+        if self.to_date.data < self.from_date.data:
+            raise ValidationError("To date must be after from date.")
+    
+    submit = SubmitField("Search")

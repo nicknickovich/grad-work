@@ -1,7 +1,7 @@
 from flask import render_template, url_for, redirect, request, flash
 from department_app.models import Employee, Department
 from department_app import db, app
-from department_app.forms import DepartmentForm, EmployeeForm
+from department_app.forms import DepartmentForm, EmployeeForm, SearchForm
 from sqlalchemy.exc import IntegrityError
 
 
@@ -90,6 +90,22 @@ def delete_employee(employee_id):
     db.session.commit()
     flash("Employee has been deleted!", "success")
     return redirect(url_for("show_employees"))
+
+
+@app.route("/search_employees", methods=["GET", "POST"])
+def search_employees():
+    """Search employees by date of birth."""
+    form = SearchForm()
+    if form.validate_on_submit():
+        employees = Employee.query\
+            .filter(form.from_date.data <= Employee.date_of_birth,
+                    Employee.date_of_birth <= form.to_date.data).all()
+        return render_template("employees.html", employees=employees,
+                                title="Search results")
+    return render_template(
+        "search_employees.html", title="Search employees", form=form,
+        legend="Search employees by date of birth"
+    )
 
 
 @app.route("/departments")
