@@ -22,7 +22,7 @@
         <tbody>
           {% for employee in employees %}
             <tr>
-              <td><a href="{{ url_for('employee', employee_id=employee.id) }}">{{ employee.name }}</a></td>
+              <td><a href="{{ url_for('show_employee', employee_id=employee.id) }}">{{ employee.name }}</a></td>
               <td>{{ employee.date_of_birth.strftime("%Y-%m-%d") }}</td>
               <td>{{ employee.salary }}</td>
               <td>{{ employee.department.name }}</td>

@@ -1,9 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import (StringField, SubmitField, IntegerField, 
-                     DecimalField, DateField, SelectField)
+from wtforms import (StringField, SubmitField, DecimalField, 
+                     DateField, SelectField)
 from wtforms.validators import DataRequired, Length, ValidationError
 from department_app.models import Department
-from department_app import db
 
 
 class EmployeeForm(FlaskForm):
@@ -16,7 +15,7 @@ class EmployeeForm(FlaskForm):
     department_id = SelectField("Department", coerce=int, choices=[
         (department.id, department.name) for department in
         Department.query.order_by(Department.id).all()])
-    
+
     submit = SubmitField("Submit")
 
 
@@ -25,7 +24,7 @@ class DepartmentForm(FlaskForm):
     name = StringField(
         "Name", validators=[DataRequired(), Length(min=2, max=100)]
     )
-    
+
     def validate_name(self, name):
         """Check if department with provided name exists."""
         department = Department.query.filter_by(name=name.data).first()
@@ -41,7 +40,8 @@ class SearchForm(FlaskForm):
     to_date = DateField("To", validators=[DataRequired()])
 
     def validate_to_date(self, to_date):
+        """Check if from date is before to date in the form."""
         if self.to_date.data < self.from_date.data:
             raise ValidationError("To date must be after from date.")
-    
+
     submit = SubmitField("Search")
