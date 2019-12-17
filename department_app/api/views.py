@@ -1,3 +1,24 @@
+# -*- coding: utf-8 -*-
+"""
+    department_app.api.views
+    ~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Routes to REST API for employees and departments.
+
+    Routes:
+    - get_employees: retrieve all employees;
+    - get_employee: retrieve employee with a given id;
+    - api_add_employee: add new employee;
+    - api_update_employee: update employee with a given id;
+    - api_delete_employee: delete employee with a given id;
+
+    - get_departments: retrieve all departments;
+    - get_department: retrieve department with a given id;
+    - api_add_department: add new department;
+    - api_update_department: update department with a given id;
+    - api_delete_department: delete department with a given id;
+"""
+
 from flask import Blueprint, request, jsonify
 from department_app.models import Employee, Department
 from department_app import db
@@ -26,13 +47,13 @@ def get_employee(employee_id):
 @api.route("/api/employee", methods=["POST"])
 def api_add_employee():
     """Add a new employee."""
+    # Get attributes for an employee from json.
     name = request.json["name"]
     date_of_birth = request.json["date_of_birth"]
     salary = request.json["salary"]
     department_id = request.json["department_id"]
-
+    # Create a new employee with received values.
     new_employee = Employee(name, date_of_birth, salary, department_id)
-
     db.session.add(new_employee)
     db.session.commit()
 
@@ -53,7 +74,7 @@ def api_update_employee(employee_id):
     employee.name = name
     employee.date_of_birth = date_of_birth
     employee.salary = salary
-    employee.department_id
+    employee.department_id = department_id
 
     db.session.commit()
 
@@ -61,7 +82,7 @@ def api_update_employee(employee_id):
 
 
 @api.route("/api/employee/<int:employee_id>", methods=["DELETE"])
-def delete_employee(employee_id):
+def api_delete_employee(employee_id):
     """Delete an employee with a given id."""
     employee = Employee.query.get_or_404(employee_id)
     db.session.delete(employee)
@@ -114,7 +135,7 @@ def api_update_department(department_id):
 
 
 @api.route("/api/department/<int:department_id>", methods=["DELETE"])
-def delete_department(department_id):
+def api_delete_department(department_id):
     """Delete a department with a given id."""
     department = Department.query.get_or_404(department_id)
     db.session.delete(department)

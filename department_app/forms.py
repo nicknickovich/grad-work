@@ -1,5 +1,16 @@
+# -*- coding: utf-8 -*-
+"""
+    department_app.forms
+    ~~~~~~~~~~~~~~~~~~~~
+
+    Forms for:
+    - adding and updating employees;
+    - adding and updating departments;
+    - search employees by date of birth.
+"""
+
 from flask_wtf import FlaskForm
-from wtforms import (StringField, SubmitField, DecimalField, 
+from wtforms import (StringField, SubmitField, DecimalField,
                      DateField, SelectField)
 from wtforms.validators import DataRequired, Length, ValidationError
 from department_app.models import Department

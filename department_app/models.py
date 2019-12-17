@@ -1,3 +1,13 @@
+# -*- coding: utf-8 -*-
+"""
+    department_app.models
+    ~~~~~~~~~~~~~~~~~~~~~
+
+    Models for employee and department.
+    These models are used by SQLAlchemy to create database, add, update
+    and query database.
+"""
+
 from department_app import db
 
 

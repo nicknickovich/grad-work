@@ -1,3 +1,11 @@
+# -*- coding: utf-8 -*-
+"""
+    department_app.main.views
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Routes for app functionality other than employees and departments.
+"""
+
 from flask import render_template, Blueprint
 
 
