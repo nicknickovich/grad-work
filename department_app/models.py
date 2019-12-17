@@ -11,6 +11,13 @@ class Employee(db.Model):
     department = db.relationship("Department", backref="department", lazy=True)
 
 
+    def __init__(self, name, date_of_birth, salary, department_id):
+        self.name = name
+        self.date_of_birth = date_of_birth
+        self.salary = salary
+        self.department_id = department_id
+
+
     def __repr__(self):
         return f"""
 Employee('{self.id}', 
@@ -24,6 +31,10 @@ class Department(db.Model):
     """Model for a department"""
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=True, nullable=False)
+
+
+    def __init__(self, name):
+        self.name = name
 
 
     def __repr__(self):
