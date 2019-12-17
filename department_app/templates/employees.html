@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block nav_right %}
-  <a class="nav-item nav-link" href="{{ url_for('search_employees') }}">Search employees</a>
-  <a class="nav-item nav-link" href="{{ url_for('add_employee') }}">New employee</a>
+  <a class="nav-item nav-link" href="{{ url_for('emp.search_employees') }}">Search employees</a>
+  <a class="nav-item nav-link" href="{{ url_for('emp.add_employee') }}">New employee</a>
 {% endblock %}
 {% block content %}
   <div class="content-section">
@@ -22,11 +22,11 @@
         <tbody>
           {% for employee in employees %}
             <tr>
-              <td><a href="{{ url_for('show_employee', employee_id=employee.id) }}">{{ employee.name }}</a></td>
+              <td><a href="{{ url_for('emp.show_employee', employee_id=employee.id) }}">{{ employee.name }}</a></td>
               <td>{{ employee.date_of_birth.strftime("%Y-%m-%d") }}</td>
               <td>{{ employee.salary }}</td>
               <td>{{ employee.department.name }}</td>
-              <td><a class="btn btn-secondary btn-sm" href="{{ url_for('update_employee', employee_id=employee.id) }}">Update</a></td>
+              <td><a class="btn btn-secondary btn-sm" href="{{ url_for('emp.update_employee', employee_id=employee.id) }}">Update</a></td>
             </tr>
           {% endfor %}
         </tbody>
