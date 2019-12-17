@@ -17,7 +17,7 @@
       </tbody>
     </table>
     <div>
-      <a class="btn btn-secondary mt-1 mb-1" href="{{ url_for('update_department', department_id=department.id) }}">Update</a>
+      <a class="btn btn-secondary mt-1 mb-1" href="{{ url_for('dep.update_department', department_id=department.id) }}">Update</a>
       <button type="button" class="btn btn-danger m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
     </div>
   </div>
@@ -33,7 +33,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <form action="{{ url_for('delete_department', department_id=department.id) }}" method="POST">
+          <form action="{{ url_for('dep.delete_department', department_id=department.id) }}" method="POST">
             <input class="btn btn-danger" type="submit" value="Delete">
           </form>
         </div>
