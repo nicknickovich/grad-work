@@ -1,3 +1,18 @@
+# -*- coding: utf-8 -*-
+"""
+    department_app.departments.views
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Routes for department functionality of the app.
+
+    Routes:
+    - show_departments: show all departments;
+    - add_department: add new department;
+    - show_department: show department with a given id;
+    - update_department: update department with a given id;
+    - delete_department delete department with a given id;
+"""
+
 from flask import render_template, Blueprint, url_for, redirect, request, flash
 from sqlalchemy.exc import IntegrityError
 from department_app.models import Employee, Department

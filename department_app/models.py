@@ -1,15 +1,24 @@
+# -*- coding: utf-8 -*-
+"""
+    department_app.models
+    ~~~~~~~~~~~~~~~~~~~~~
+
+    Models for employee and department.
+    These models are used by SQLAlchemy to create database, add, update
+    and query database.
+"""
+
 from department_app import db
 
 
 class Employee(db.Model):
-    """Model for an employee"""
+    """Model for an employee."""
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     date_of_birth = db.Column(db.DateTime, nullable=False)
     salary = db.Column(db.Float, nullable=False)
     department_id = db.Column(db.Integer, db.ForeignKey("department.id"), nullable=False)
     department = db.relationship("Department", backref="department", lazy=True)
-
 
     def __repr__(self):
         return f"""
@@ -21,10 +30,9 @@ Employee('{self.id}',
 
 
 class Department(db.Model):
-    """Model for a department"""
+    """Model for a department."""
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=True, nullable=False)
 
-
     def __repr__(self):
-        return f"Department('{self.name}')"
+        return f"Department('{self.id}','{self.name}')"

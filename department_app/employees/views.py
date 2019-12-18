@@ -1,3 +1,18 @@
+# -*- coding: utf-8 -*-
+"""
+    department_app.employees.views
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Routes for employees functionality of the app.
+
+    Routes:
+    - show_employees: show all employees;
+    - add_employee: add new employee;
+    - show_employee: show employee with a given id;
+    - update_employee: update employee with a given id;
+    - delete_employee delete employee with a given id;
+"""
+
 from flask import render_template, Blueprint, url_for, redirect, request, flash
 from department_app.models import Employee
 from department_app import db

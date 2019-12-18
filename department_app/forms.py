@@ -1,5 +1,16 @@
+# -*- coding: utf-8 -*-
+"""
+    department_app.forms
+    ~~~~~~~~~~~~~~~~~~~~
+
+    Forms for:
+    - adding and updating employees;
+    - adding and updating departments;
+    - search employees by date of birth.
+"""
+
 from flask_wtf import FlaskForm
-from wtforms import (StringField, SubmitField, DecimalField, 
+from wtforms import (StringField, SubmitField, DecimalField,
                      DateField, SelectField)
 from wtforms.validators import DataRequired, Length, ValidationError
 from department_app.models import Department
@@ -17,6 +28,13 @@ class EmployeeForm(FlaskForm):
         Department.query.order_by(Department.id).all()])
 
     submit = SubmitField("Submit")
+
+    def __init__(self):
+        super().__init__()
+        EmployeeForm.department_id = SelectField("Department", coerce=int, choices=[
+            (department.id, department.name) for department in
+            Department.query.order_by(Department.id).all()])
+        
 
 
 class DepartmentForm(FlaskForm):
