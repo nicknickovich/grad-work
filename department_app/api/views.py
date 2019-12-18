@@ -53,7 +53,12 @@ def api_add_employee():
     salary = request.json["salary"]
     department_id = request.json["department_id"]
     # Create a new employee with received values.
-    new_employee = Employee(name, date_of_birth, salary, department_id)
+    new_employee = Employee(
+        name=name, 
+        date_of_birth=date_of_birth, 
+        salary=salary, 
+        department_id=department_id
+    )
     db.session.add(new_employee)
     db.session.commit()
 
@@ -114,7 +119,7 @@ def api_add_department():
     # Get name from json.
     name = request.json["name"]
     # Create department with name from json.
-    new_department = Department(name)
+    new_department = Department(name=name)
     db.session.add(new_department)
     db.session.commit()
 

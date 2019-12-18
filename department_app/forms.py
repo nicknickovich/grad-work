@@ -29,6 +29,13 @@ class EmployeeForm(FlaskForm):
 
     submit = SubmitField("Submit")
 
+    def __init__(self):
+        super().__init__()
+        EmployeeForm.department_id = SelectField("Department", coerce=int, choices=[
+            (department.id, department.name) for department in
+            Department.query.order_by(Department.id).all()])
+        
+
 
 class DepartmentForm(FlaskForm):
     """Form for adding and updating departments."""
