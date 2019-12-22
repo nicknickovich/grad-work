@@ -11,7 +11,7 @@
 
 from flask_wtf import FlaskForm
 from wtforms import (StringField, SubmitField, DecimalField,
-                     DateField, SelectField)
+                     DateField, SelectField, IntegerField)
 from wtforms.validators import DataRequired, Length, ValidationError
 from department_app.models import Department
 
@@ -23,18 +23,9 @@ class EmployeeForm(FlaskForm):
     )
     date_of_birth = DateField("Date of Birth", validators=[DataRequired()])
     salary = DecimalField("Salary", validators=[DataRequired()])
-    department_id = SelectField("Department", coerce=int, choices=[
-        (department.id, department.name) for department in
-        Department.query.order_by(Department.id).all()])
+    department_id = IntegerField("Department", validators=[DataRequired()])
 
     submit = SubmitField("Submit")
-
-    def __init__(self):
-        super().__init__()
-        EmployeeForm.department_id = SelectField("Department", coerce=int, choices=[
-            (department.id, department.name) for department in
-            Department.query.order_by(Department.id).all()])
-        
 
 
 class DepartmentForm(FlaskForm):
