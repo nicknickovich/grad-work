@@ -12,18 +12,23 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 
 db = SQLAlchemy()
-app = Flask(__name__, instance_relative_config=True)
-app.config.from_object("config")
-app.config.from_pyfile("config.py")
-db = SQLAlchemy(app)
-ma = Marshmallow(app)
+ma = Marshmallow()
+def create_app(config_file):
+    app = Flask(__name__, instance_relative_config=True)
+    with app.app_context():
+        app.config.from_object("config")
+        app.config.from_pyfile(config_file)
 
-from department_app.main.views import main
-from department_app.employees.views import emp
-from department_app.departments.views import dep
-from department_app.api.views import api
+        db.init_app(app)
 
-app.register_blueprint(main)
-app.register_blueprint(emp)
-app.register_blueprint(dep)
-app.register_blueprint(api)
+        from department_app.main.views import main
+        from department_app.employees.views import emp
+        from department_app.departments.views import dep
+        from department_app.api.views import api
+
+        app.register_blueprint(main)
+        app.register_blueprint(emp)
+        app.register_blueprint(dep)
+        app.register_blueprint(api)
+
+    return app

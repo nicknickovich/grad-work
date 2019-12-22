@@ -6,7 +6,9 @@
     Module to run the application.
 """
 
-from department_app import app
+from department_app import create_app
+
+app = create_app("config.py")
 
 
 if __name__ == "__main__":
