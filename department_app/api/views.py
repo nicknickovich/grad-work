@@ -6,17 +6,17 @@
     Routes to REST API for employees and departments.
 
     Routes:
-    - get_employees: retrieve all employees;
-    - get_employee: retrieve employee with a given id;
-    - api_add_employee: add new employee;
-    - api_update_employee: update employee with a given id;
-    - api_delete_employee: delete employee with a given id;
+    - GET /api/employee: retrieve all employees;
+    - GET /api/employee/<id>: retrieve employee with a given id;
+    - POST /api/employee: add new employee;
+    - PUT /api/employee/<id>: update employee with a given id;
+    - DELETE /api/employee/<id>: delete employee with a given id;
 
-    - get_departments: retrieve all departments;
-    - get_department: retrieve department with a given id;
-    - api_add_department: add new department;
-    - api_update_department: update department with a given id;
-    - api_delete_department: delete department with a given id;
+    - GET /api/department: retrieve all departments;
+    - GET /api/department/<id>: retrieve department with a given id;
+    - POST /api/department: add new department;
+    - PUT /api/department/<id>: update department with a given id;
+    - DELETE /api/department/<id>: delete department with a given id;
 """
 
 from flask import Blueprint, request, jsonify
@@ -54,9 +54,9 @@ def api_add_employee():
     department_id = request.json["department_id"]
     # Create a new employee with received values.
     new_employee = Employee(
-        name=name, 
-        date_of_birth=date_of_birth, 
-        salary=salary, 
+        name=name,
+        date_of_birth=date_of_birth,
+        salary=salary,
         department_id=department_id
     )
     db.session.add(new_employee)
