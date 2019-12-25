@@ -11,7 +11,7 @@
 
 from flask_wtf import FlaskForm
 from wtforms import (StringField, SubmitField, DecimalField,
-                     DateField, SelectField, IntegerField)
+                     DateField, IntegerField)
 from wtforms.validators import DataRequired, Length, ValidationError
 from department_app.models import Department
 
