@@ -12,12 +12,13 @@
     - update_department: update department with a given id;
     - delete_department delete department with a given id;
 """
-
+import os
 from flask import render_template, Blueprint, url_for, redirect, request, flash
 from sqlalchemy.exc import IntegrityError
 from department_app.models import Employee, Department
 from department_app import db
 from department_app.forms import DepartmentForm
+import pymysql
 
 
 dep = Blueprint("dep", __name__)
@@ -27,38 +28,28 @@ dep = Blueprint("dep", __name__)
 def show_departments():
     """Render a list of all departments"""
     departments = Department.query.order_by(Department.id).all()
-    employees = Employee.query.all()
 
-    # Get information about all employees' salaries
-    # and departments they belong to.
-    salaries_info = {}
-    for employee in employees:
-        if employee.department_id in salaries_info:
-            salaries_info[employee.department_id]["total"] += employee.salary
-            salaries_info[employee.department_id]["count"] += 1
-        else:
-            salaries_info.update(
-                {
-                    employee.department_id: {
-                        "total": employee.salary,
-                        "count": 1,
-                    }
-                }
-            )
+    # Connect with database using pymysql
+    con = pymysql.connect(host=os.environ.get("MY_HOST"),
+                          user=os.environ.get("MY_USER"),
+                          password=os.environ.get("MY_PASSWORD"),
+                          db="company",
+                          cursorclass=pymysql.cursors.DictCursor)
+    
+    with con:
+        cur = con.cursor()
+        # Calculate average salary for departments
+        cur.execute("""SELECT department.id AS dep_id, 
+                              AVG(employee.salary) AS avg_sal
+                       FROM employee
+                       JOIN department
+                       ON employee.department_id = department.id
+                       GROUP BY department_id
+                    """)
 
-    # Calculate average salaries for all departments
-    # and store them in a dictionary.
-    avg_salaries = {}
-    for department in departments:
-        if department.id in salaries_info:
-            # If department has employees.
-            avg_salaries[department.id] = (
-                round(salaries_info[department.id]["total"]
-                      / salaries_info[department.id]["count"], 2)
-            )
-        else:
-            # Department has no employees.
-            avg_salaries[department.id] = 0
+    rows = cur.fetchall()
+
+    avg_salaries = {row["dep_id"]: row["avg_sal"] for row in rows}
 
     return render_template(
         "departments.html", departments=departments,

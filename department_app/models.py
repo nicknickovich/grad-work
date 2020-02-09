@@ -21,12 +21,8 @@ class Employee(db.Model):
     department = db.relationship("Department", backref="department", lazy=True)
 
     def __repr__(self):
-        return f"""
-Employee('{self.id}', 
-         '{self.name}', 
-         '{self.salary}',
-         '{self.date_of_birth}',
-         '{self.department}')"""
+        return (f"Employee({self.id}, {self.name}, {self.salary},\
+                {self.date_of_birth}, {self.department}")
 
 
 class Department(db.Model):
@@ -35,4 +31,4 @@ class Department(db.Model):
     name = db.Column(db.String(100), unique=True, nullable=False)
 
     def __repr__(self):
-        return f"Department('{self.id}','{self.name}')"
+        return f"Department({self.id}, {self.name})"
