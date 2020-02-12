@@ -90,6 +90,32 @@ def test_api_return_one_employee(test_client, init_database):
     }
 
 
+def test_api_add_new_employee(test_client, init_database):
+    new_employee = {
+        "id": 3,
+        "name": "Kate White",
+        "date_of_birth": "1983-12-12T00:00:00",
+        "salary": 60000.0,
+        "department_id": 1
+    }
+    test_client.post("/api/employee", json=new_employee)
+    response = test_client.get("api/employee/3")
+    assert new_employee == response.json
+
+
+def test_api_update_employee(test_client, init_database):
+    updated_employee = {
+        "id": 2,
+        "name": "Jane Doe",
+        "date_of_birth": "1985-12-31T00:00:00",
+        "salary": 85000.0,
+        "department_id": 1
+    }
+    test_client.put("/api/employee/2", json=updated_employee)
+    response = test_client.get("api/employee/2")
+    assert response.json == updated_employee
+
+
 def test_api_delete_employee(test_client, init_database):
     employee_to_delete = test_client.get("api/employee/1").json
     test_client.delete("api/employee/1")
