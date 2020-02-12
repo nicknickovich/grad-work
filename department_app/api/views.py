@@ -19,6 +19,7 @@
     - DELETE /api/department/<id>: delete department with a given id;
 """
 
+from datetime import datetime
 from flask import Blueprint, request, jsonify
 from department_app.models import Employee, Department
 from department_app import db
@@ -49,7 +50,9 @@ def api_add_employee():
     """Add a new employee."""
     # Get attributes for an employee from json.
     name = request.json["name"]
-    date_of_birth = request.json["date_of_birth"]
+    date_of_birth = datetime.strptime(
+        request.json["date_of_birth"], "%Y-%m-%dT%H:%M:%S"
+    )
     salary = request.json["salary"]
     department_id = request.json["department_id"]
     # Create a new employee with received values.
@@ -72,7 +75,9 @@ def api_update_employee(employee_id):
     employee = Employee.query.get_or_404(employee_id)
     # Get attributes for an employee from json.
     name = request.json["name"]
-    date_of_birth = request.json["date_of_birth"]
+    date_of_birth = datetime.strptime(
+        request.json["date_of_birth"], "%Y-%m-%dT%H:%M:%S"
+    )
     salary = request.json["salary"]
     department_id = request.json["department_id"]
     # Set new values for attributes.

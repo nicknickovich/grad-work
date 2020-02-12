@@ -20,6 +20,7 @@
     - DELETE /api_v2/department/<id>: delete department with a given id;
 """
 
+from datetime import datetime
 from flask import Blueprint, request
 from flask_restful import Resource
 from department_app.models import Employee, Department
@@ -48,7 +49,9 @@ class EmployeeApi(Resource):
         """Create a new employee."""
         # Get employee's attributes from json.
         name = request.json["name"]
-        date_of_birth = request.json["date_of_birth"]
+        date_of_birth = datetime.strptime(
+            request.json["date_of_birth"], "%Y-%m-%dT%H:%M:%S"
+        )
         salary = request.json["salary"]
         department_id = request.json["department_id"]
         # Create a new employee with provided attributes.
@@ -68,7 +71,9 @@ class EmployeeApi(Resource):
         employee = Employee.query.get_or_404(employee_id)
         # Get attributes for an employee from json.
         name = request.json["name"]
-        date_of_birth = request.json["date_of_birth"]
+        date_of_birth = datetime.strptime(
+            request.json["date_of_birth"], "%Y-%m-%dT%H:%M:%S"
+        )
         salary = request.json["salary"]
         department_id = request.json["department_id"]
         # Set new values for attributes.
